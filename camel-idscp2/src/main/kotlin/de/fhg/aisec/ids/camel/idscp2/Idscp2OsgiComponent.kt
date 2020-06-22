@@ -27,22 +27,30 @@ import org.osgi.service.component.annotations.Activate
 import org.osgi.service.component.annotations.Component
 import org.osgi.service.component.annotations.Reference
 import org.osgi.service.component.annotations.ReferenceCardinality
+import org.springframework.beans.factory.annotation.Autowired
+import javax.annotation.PostConstruct
 
 @Component
+@org.springframework.stereotype.Component
 class Idscp2OsgiComponent {
     @Reference(cardinality = ReferenceCardinality.MANDATORY)
+    @Autowired
     private lateinit var settings: Settings
 
+    @Autowired
     @Reference(cardinality = ReferenceCardinality.MANDATORY)
     private lateinit var infoModelManager: InfoModel
 
+    @Autowired(required = false)
     @Reference(cardinality = ReferenceCardinality.OPTIONAL)
     private var tokenManager: TokenManager? = null
 
+    @Autowired(required = false)
     @Reference(cardinality = ReferenceCardinality.OPTIONAL)
     private var endpointConfigManager: EndpointConfigManager? = null
 
     @Activate
+    @PostConstruct
     fun activate() {
         instance = this
     }
@@ -88,4 +96,5 @@ class Idscp2OsgiComponent {
 
         val endpointConfigManager get() = instance.endpointConfigManager
     }
+
 }

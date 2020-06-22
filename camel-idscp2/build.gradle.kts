@@ -5,7 +5,10 @@ dependencies {
             rootProject.ext.get("libraryVersions") as Map<String, String>
     
     providedByBundle(project(":ids-api")) { isTransitive = false }
-    providedByBundle(project(":idscp2-app-layer"))
+
+    api(project(":idscp2-app-layer"))
+
+    implementation("org.springframework.boot:spring-boot-starter")
 
     implementation("de.fraunhofer.iais.eis.ids.infomodel", "java", libraryVersions["infomodel"])
     implementation("de.fraunhofer.iais.eis.ids", "infomodel-serializer", libraryVersions["infomodelSerializer"])
