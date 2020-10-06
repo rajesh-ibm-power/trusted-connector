@@ -11,22 +11,28 @@ buildscript {
 plugins {
 
     // Spring Boot
-    id("org.springframework.boot") version "2.3.1.RELEASE" apply false
+    id("org.springframework.boot") version "2.3.4.RELEASE" apply false
     id("io.spring.dependency-management") version "1.0.8.RELEASE"
 
     // Other needed plugins
     id("com.moowork.node") version "1.3.1" apply false
+    // Latest version compiled with Java 11
     id("com.benjaminsproule.swagger") version "1.0.8" apply false
 
     // Protobuf
     id("com.google.protobuf") version "0.8.12" apply false
 
     // Kotlin specific
-    kotlin("jvm") version "1.3.72" apply false
-    kotlin("plugin.spring") version "1.3.50" apply false
+    kotlin("jvm") version "1.4.10" apply false
+    kotlin("plugin.spring") version "1.4.10" apply false
 }
 
-ext.set("libraryVersions", Yaml().loadAs(java.io.FileInputStream(file("${rootDir}/libraryVersions.yaml")), Map::class.java))
+@Suppress("UNCHECKED_CAST")
+val libraryVersions: Map<String, String> =
+        Yaml().loadAs(
+                java.io.FileInputStream(file("${rootDir}/libraryVersions.yaml")),
+                Map::class.java) as Map<String, String>
+ext.set("libraryVersions", libraryVersions)
 
 allprojects {
 
@@ -63,13 +69,17 @@ subprojects {
     dependencies {
         val implementation by configurations
 
+        // Explicitly provide all stdlib variants to prevent classpath version warnings
         implementation(kotlin("reflect"))
+        implementation(kotlin("stdlib"))
+        implementation(kotlin("stdlib-jdk7"))
         implementation(kotlin("stdlib-jdk8"))
+        implementation(kotlin("stdlib-common"))
     }
 
     configure<io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension> {
         imports {
-            mavenBom("org.springframework.boot:spring-boot-dependencies:2.3.1.RELEASE")
+            mavenBom("org.springframework.boot:spring-boot-dependencies:${libraryVersions["springBoot"]}")
         }
 
         imports {
