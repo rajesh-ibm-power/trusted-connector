@@ -68,13 +68,20 @@ subprojects {
 
     dependencies {
         val implementation by configurations
+        val runtime by configurations
+        val kotlinCompilerClasspath by configurations
 
-        // Explicitly provide all stdlib variants to prevent classpath version warnings
-        implementation(kotlin("reflect"))
         implementation(kotlin("stdlib"))
-        implementation(kotlin("stdlib-jdk7"))
-        implementation(kotlin("stdlib-jdk8"))
-        implementation(kotlin("stdlib-common"))
+        // we need to explicitly specify the 1.4 version for all kotlin dependencies,
+        // because otherwise something (maybe a plugin) downgrades the kotlin version to 1.3,
+        // which produces errors in the kotlin compiler. this is really nasty
+        configurations.all {
+            resolutionStrategy.eachDependency {
+                if (requested.group == "org.jetbrains.kotlin") {
+                    useVersion("1.4.10")
+                }
+            }
+        }
     }
 
     configure<io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension> {
