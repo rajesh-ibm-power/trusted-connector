@@ -12,7 +12,6 @@ dependencies {
     providedByFeature group: 'org.apache.camel', name: 'camel-management', version: libraryVersions.camel
 
     compileOnly group: 'org.checkerframework', name: 'checker-qual', version: libraryVersions.checkerQual
-    compile group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1'
 
     osgiCore group: 'org.apache.felix', name: 'org.apache.felix.framework', version: libraryVersions.felixFramework
     osgiCore group: 'org.osgi', name: 'osgi.cmpn', version: libraryVersions.osgiCompendium

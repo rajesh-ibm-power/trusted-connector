@@ -68,20 +68,26 @@ subprojects {
 
     dependencies {
         val implementation by configurations
-        val runtime by configurations
-        val kotlinCompilerClasspath by configurations
+        val compileOnly by configurations
+        val testImplementation by configurations
 
         implementation(kotlin("stdlib"))
-        // we need to explicitly specify the 1.4 version for all kotlin dependencies,
+        // We need to explicitly specify the 1.4 version for all kotlin dependencies,
         // because otherwise something (maybe a plugin) downgrades the kotlin version to 1.3,
-        // which produces errors in the kotlin compiler. this is really nasty
+        // which produces errors in the kotlin compiler. This is really nasty.
         configurations.all {
             resolutionStrategy.eachDependency {
                 if (requested.group == "org.jetbrains.kotlin") {
-                    useVersion("1.4.10")
+                    useVersion(libraryVersions["kotlin"] ?: throw RuntimeException("kotlin version not set"))
                 }
             }
         }
+
+        compileOnly("javax.xml.bind", "jaxb-api", libraryVersions["jaxbApi"])
+        testImplementation("javax.xml.bind", "jaxb-api", libraryVersions["jaxbApi"])
+        testImplementation("com.sun.xml.bind", "jaxb-core", libraryVersions["jaxb"])
+        testImplementation("com.sun.xml.bind", "jaxb-impl", libraryVersions["jaxb"])
+        testImplementation("com.sun.activation", "javax.activation", libraryVersions["jaxActivation"])
     }
 
     configure<io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension> {

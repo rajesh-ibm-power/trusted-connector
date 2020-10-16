@@ -39,8 +39,7 @@ import java.util.concurrent.TimeUnit
 import javax.annotation.PostConstruct
 
 /**
- * servicefactory=false is the default and actually not required. But we want to make clear that
- * this is a singleton, i.e. there will only be one instance of PolicyDecisionPoint within the whole
+ * This is a singleton, i.e. there will only be one instance of PolicyDecisionPoint within the whole
  * runtime.
  *
  * @author Julian Schuette (julian.schuette@aisec.fraunhofer.de)
@@ -152,7 +151,7 @@ class PolicyDecisionPoint : PDP, PAP {
     fun loadPolicies() {
         // Try to load existing policies from deploy dir at activation
         //val dir = File(System.getProperty("karaf.base") + File.separator + "deploy")
-        val url = Thread.currentThread().contextClassLoader.getResource("deploy")
+        val url = Thread.currentThread().contextClassLoader.getResource("deploy") ?: return
         val file = File(url.path)
 
         val directoryListing = file.listFiles()

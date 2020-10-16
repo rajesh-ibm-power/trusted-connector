@@ -74,7 +74,7 @@ public class CertApi {
   private static final String TRUSTSTORE_FILE = "truststore.p12";
   private static final String KEYSTORE_FILE = "provider-keystore.p12";
 
-  private Settings settings;
+  private final Settings settings;
 
   public CertApi(@Autowired @NonNull Settings settings) {
     this.settings = settings;
