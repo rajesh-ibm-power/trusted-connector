@@ -4,7 +4,7 @@ plugins {
 }
 
 springBoot {
-    mainClassName = "de.fhg.aisec.ids.MyConnector"
+    mainClassName = "de.fhg.aisec.ids.ExampleConnector"
 }
 
 dependencies {
